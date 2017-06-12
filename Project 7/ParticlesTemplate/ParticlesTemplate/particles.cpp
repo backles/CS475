@@ -28,7 +28,7 @@
 
 // title of these windows:
 
-const char *WINDOWTITLE = { "OpenCL/OpenGL Particle System -- Joe Parallel" };
+const char *WINDOWTITLE = { "OpenCL/OpenGL Particle System -- Braden Ackles(Perry)" };
 const char *GLUITITLE   = { "User Interface Window" };
 
 // random parameters:					
@@ -43,7 +43,7 @@ const float ZMAX = 	{  100.0 };
 const float VMIN =	{   -100. };
 const float VMAX =	{    100. };
 
-
+//const int NUM_PARTICLES = 32*1024;
 const int NUM_PARTICLES = 1024*1024;
 const int LOCAL_SIZE    = 32;
 const char *CL_FILE_NAME   = { "particles.cl" };
@@ -431,9 +431,25 @@ InitCL( )
 				// test against CL_SUCCESS
 
 	// get the platform id:
-
-	status = clGetPlatformIDs( 1, &Platform, NULL );
+	//Braden Work Added 5/20/2017
+	cl_uint numPlatforms;
+	status = clGetPlatformIDs( 0, NULL, $numPlatforms);
+	fprintf(stderr, "The Number of Platforms is = %d\n\n", numPlatforms);
+	cl_platform_id *platforms = new cl_platform_id[numPlatforms];
+	status = clGetPlatformIDs( numPlatforms, platforms, NULL );
 	PrintCLError( status, "clGetPlatformIDs: " );
+	bool tempOne = false;
+	for(int i = 0; i < (int)numPlatforms; i++){
+			Platform = platforms[i]
+			status = clGetDeviceIDs(Platform, CL_DEVICE_TYPE_GPU, 1, &Device, NULL);
+			if(status == CL_SUCCESS){
+					tempOne = True;
+					break;
+			}
+	}
+	if(tempOne == false){
+			fprintf(stderr, "There are no GPU devices!\n");
+	}
 	
 	// get the device id:
 
@@ -446,12 +462,10 @@ InitCL( )
 	// (no point going on if it isn't):
 	// (we need the Device in order to ask, so can't do it any sooner than here)
 
-	if(  IsCLExtensionSupported( "cl_khr_gl_sharing" )  )
-	{
+	if(  IsCLExtensionSupported( "cl_khr_gl_sharing" )  ){
 		fprintf( stderr, "cl_khr_gl_sharing is supported.\n" );
 	}
-	else
-	{
+	else{
 		fprintf( stderr, "cl_khr_gl_sharing is not supported -- sorry.\n" );
 		return;
 	}
@@ -686,6 +700,7 @@ InitLists( )
 {
 	SphereList = glGenLists( 1 );
 	glNewList( SphereList, GL_COMPILE );
+		//Sphere 1
 		glColor3f( .9f, .9f, 0. );
 		glPushMatrix( );
 			glTranslatef( -100., -800., 0. );
@@ -859,14 +874,17 @@ ResetParticles( )
 	}
 	glUnmapBuffer( GL_ARRAY_BUFFER );
 
-
 	glBindBuffer( GL_ARRAY_BUFFER, hCobj );
 	struct rgba *colors = (struct rgba *) glMapBuffer( GL_ARRAY_BUFFER, GL_WRITE_ONLY );
-	for( int i = 0; i < NUM_PARTICLES; i++ )
-	{
+	for( int i = 0; i < NUM_PARTICLES; i++ ){
 		colors[i].r = Ranf( .3f, 1. );
 		colors[i].g = Ranf( .3f, 1. );
 		colors[i].b = Ranf( .3f, 1. );
+		//Braden added 2/18/2017
+		//change color
+		colors[i].r = 1.;
+		colors[i].g = 1.;
+		colors[i].b = 1.;
 		colors[i].a = 1.;
 	}
 	glUnmapBuffer( GL_ARRAY_BUFFER );
@@ -879,8 +897,6 @@ ResetParticles( )
 		hVel[i].z = Ranf( VMIN, VMAX );
 	}
 }
-
-
 
 void
 Resize( int width, int height )
@@ -905,12 +921,6 @@ Visibility ( int state )
 		// animating or redrawing it ...
 	}
 }
-
-
-
-
-
-
 
 // the stroke characters 'X' 'Y' 'Z' :
 
@@ -1046,8 +1056,6 @@ Quit( )
 	glutSetWindow( MainWindow );
 	glFinish( );
 	glutDestroyWindow( MainWindow );
-
-
 	// 13. clean everything up:
 
 	clReleaseKernel(        Kernel   );
@@ -1055,7 +1063,6 @@ Quit( )
 	clReleaseCommandQueue(  CmdQueue );
 	clReleaseMemObject(     dPobj  );
 	clReleaseMemObject(     dCobj  );
-
 	exit( 0 );
 }
 
@@ -1065,18 +1072,15 @@ Quit( )
 #define TOP	2147483647.		// 2^31 - 1	
 
 float
-Ranf( float low, float high )
-{
+Ranf( float low, float high ){
 	long random( );		// returns integer 0 - TOP
-
 	float r = (float)rand( );
 	return(   low  +  r * ( high - low ) / (float)RAND_MAX   );
 }
 
 
 bool
-IsCLExtensionSupported( const char *extension )
-{
+IsCLExtensionSupported( const char *extension ){
 	// see if the extension is bogus:
 
 	if( extension == NULL  ||  extension[0] == '\0' )
