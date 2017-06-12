@@ -1,0 +1,5 @@
+﻿  particles.cpp
+glui32.lib(glui_edittext.obj) : error LNK2019: unresolved external symbol _printf referenced in function "public: virtual int __thiscall GLUI_EditText::special_handler(int,int)" (?special_handler@GLUI_EditText@@UAEHHH@Z)
+glui32.lib(ALGEBRA3.OBJ) : error LNK2001: unresolved external symbol _printf
+glui32.lib(glui_spinner.obj) : error LNK2019: unresolved external symbol __flsbuf referenced in function "void __cdecl spinner_edittext_callback(int)" (?spinner_edittext_callback@@YAXH@Z)
+C:\Users\Admin\OneDrive\School\Junior Year\Spring Term\CS 475\Projects\Project 7\ParticlesTemplate\Debug\Particles.exe : fatal error LNK1120: 2 unresolved externals

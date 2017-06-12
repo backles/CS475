@@ -1,0 +1,13 @@
+﻿Build started 6/7/2016 5:16:52 PM.
+     1>Project "C:\Users\Braden\Downloads\ParticlesTemplate\ParticlesTemplate\Particles.vcxproj" on node 2 (build target(s)).
+     1>InitializeBuildStatus:
+         Creating "Debug\Particles.unsuccessfulbuild" because "AlwaysCreate" was specified.
+       ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /IC:\Users\Braden\Downloads\ParticlesTemplate\ParticlesTemplate\packages\nupengl.core.0.1.0.1\build\native\../..//build/native/include/ /IC:\Users\Braden\Downloads\ParticlesTemplate\ParticlesTemplate\packages\freeglut.2.8.1.15\build\native\../..//build/native/include/ /ZI /nologo /W3 /WX- /Od /Oy- /D HAS_FREEGLUT /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MTd /GS /fp:precise /Zc:wchar_t /Zc:forScope /openmp /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt particles.cpp
+         particles.cpp
+     1>c:\users\braden\downloads\particlestemplate\particlestemplate\particles.cpp(6): fatal error C1083: Cannot open include file: 'omp.h': No such file or directory
+     1>Done Building Project "C:\Users\Braden\Downloads\ParticlesTemplate\ParticlesTemplate\Particles.vcxproj" (build target(s)) -- FAILED.
+
+Build FAILED.
+
+Time Elapsed 00:00:01.16
