@@ -46,8 +46,8 @@ const float VMAX =	{    100. };
 //const int NUM_PARTICLES = 32*1024;
 const int NUM_PARTICLES = 1024*1024;
 const int LOCAL_SIZE    = 32;
-const char *CL_FILE_NAME   = { "particles.cl" };
-const char *CL_BINARY_NAME = { "particles.nv" };
+const char *CL_FILE_NAME   = { "acklesb.cl" };
+const char *CL_BINARY_NAME = { "acklesb.nv" };
 
 
 const int GLUITRUE  = { true  };
